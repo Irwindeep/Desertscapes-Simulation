@@ -3,6 +3,9 @@
 Out/
 Temp/
 
+# clang config
+.clangd
+
 # Prerequisites
 *.d
 

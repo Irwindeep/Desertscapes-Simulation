@@ -1,3 +1,6 @@
+> [!NOTE]
+> In this implementation, I attempt to create a python API for Desertscapes Simulation with pybind.
+
 ## Desertscape Simulation
 
 <img src="https://aparis69.github.io/public_html/imgs/deserts_representative.jpg"
