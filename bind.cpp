@@ -4,6 +4,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <tuple>
 
 namespace py = pybind11;
 
@@ -14,8 +15,8 @@ PYBIND11_MODULE(dune, m) {
                        std::tuple<double, double> cell_size, bool vegetation_on,
                        bool abrasion_on) {
              DuneSediment ds(
-                 Box2D(Vector2(0, 0),
-                       Vector2(std::get<0>(cell_size), std::get<1>(cell_size))),
+                 Box2D(Vector2(0, 0), Vector2(std::get<0>(cell_size) * nx,
+                                              std::get<1>(cell_size) * ny)),
                  r_min, r_max, Vector2(std::get<0>(wind), std::get<1>(wind)));
              ds.nx = nx;
              ds.ny = ny;
@@ -24,7 +25,7 @@ PYBIND11_MODULE(dune, m) {
              return ds;
            }),
            py::arg("nx"), py::arg("ny"), py::arg("r_min"), py::arg("r_max"),
-           py::arg("wind"), py::arg("cell_size"),
+           py::arg("wind"), py::arg("cell_size") = std::make_tuple(1, 1),
            py::arg("vegetation_on") = false, py::arg("abrasion_on") = false)
       .def_readwrite("nx", &DuneSediment::nx)
       .def_readwrite("ny", &DuneSediment::ny)
