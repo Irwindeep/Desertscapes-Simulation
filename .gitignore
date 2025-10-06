@@ -5,6 +5,7 @@ Temp/
 
 # clang config
 .clangd
+.cache/
 
 # Prerequisites
 *.d
