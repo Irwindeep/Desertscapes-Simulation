@@ -7,8 +7,8 @@
 /*!
 \brief Default constructor.
 */
-DuneSediment::DuneSediment() : box(Box2D(Vector2(0), 1)), wind(Vector2(1, 0)) {
-  nx = ny = 256;
+DuneSediment::DuneSediment(int nx, int ny)
+    : nx(nx), ny(ny), box(Box2D(Vector2(0), 1)), wind(Vector2(1, 0)) {
 
   bedrock = ScalarField2D(nx, ny, box, 0.0);
   vegetation = ScalarField2D(nx, ny, box, 0.0);
@@ -30,10 +30,9 @@ DuneSediment::DuneSediment() : box(Box2D(Vector2(0), 1)), wind(Vector2(1, 0)) {
 \param rMax max amount of sediment per cell
 \param w wind vector
 */
-DuneSediment::DuneSediment(const Box2D &bbox, float rMin, float rMax,
-                           const Vector2 &w)
-    : box(bbox), wind(w) {
-  nx = ny = 256;
+DuneSediment::DuneSediment(int nx, int ny, const Box2D &bbox, float rMin,
+                           float rMax, const Vector2 &w)
+    : nx(nx), ny(ny), box(bbox), wind(w) {
 
   bedrock = ScalarField2D(nx, ny, box, 0.0);
   vegetation = ScalarField2D(nx, ny, box, 0.0);

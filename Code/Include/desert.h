@@ -25,8 +25,9 @@ public:
   ScalarField2D sediments;  //!< Sediment elevation layer, in meter.
   ScalarField2D vegetation; //!< Vegetation presence in [0, 1].
 
-  DuneSediment();
-  DuneSediment(const Box2D &bbox, float rMin, float rMax, const Vector2 &w);
+  DuneSediment(int nx, int ny);
+  DuneSediment(int nx, int ny, const Box2D &bbox, float rMin, float rMax,
+               const Vector2 &w);
   ~DuneSediment();
 
   // Simulation
