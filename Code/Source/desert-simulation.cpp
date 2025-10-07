@@ -38,14 +38,8 @@ void DuneSediment::EndSimulationStep() {
 #pragma omp atomic
   simulationStepCount++;
 
-  if (simulationStepCount % 5 == 0) {
-    // Bedrock stabilization is required if abrasion is turned on
-    // To avoid unrealistic bedrock shapes. However, the repose angle of the
-    // material Can be changed (we use 68 degrees, see desert.h static
-    // variables).
-    if (abrasionOn)
-      StabilizeBedrockAll();
-  }
+  if (abrasionOn)
+    StabilizeBedrockAll();
 }
 
 /*!
