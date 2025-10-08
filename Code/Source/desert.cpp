@@ -34,7 +34,7 @@ DuneSediment::DuneSediment(int nx, int ny, const Box2D &bbox, float rMin,
                            float rMax, const Vector2 &w)
     : nx(nx), ny(ny), box(bbox), wind(w) {
 
-  bedrock = ScalarField2D(nx, ny, box, 0.0);
+  bedrock = ScalarField2D(nx, ny, box, 1.0);
   vegetation = ScalarField2D(nx, ny, box, 0.0);
   sediments = ScalarField2D(nx, ny, box, 0.0);
   for (int i = 0; i < nx; i++) {
