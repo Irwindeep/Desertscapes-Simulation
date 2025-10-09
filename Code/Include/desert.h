@@ -14,7 +14,6 @@ protected:
   float matterToMove; //!< Amount of sand transported by the wind, in meter.
   float cellSize; //!< Size of one cell in meter, squared. Stored to speed up
                   //!< the simulation.
-  Vector2 wind;   //!< Base wind direction.
 
 public:
   int nx, ny; //!< Grid resolution.
@@ -24,6 +23,8 @@ public:
   ScalarField2D bedrock;    //!< Bedrock elevation layer, in meter.
   ScalarField2D sediments;  //!< Sediment elevation layer, in meter.
   ScalarField2D vegetation; //!< Vegetation presence in [0, 1].
+  ScalarField2D windX;
+  ScalarField2D windY;
 
   DuneSediment(int nx, int ny);
   DuneSediment(int nx, int ny, const Box2D &bbox, float rMin, float rMax,

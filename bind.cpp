@@ -1,10 +1,14 @@
 #include "Code/Include/basics.h"
 #include "Code/Include/desert.h"
 #include "Code/Include/vec.h"
+#include "pybind11/cast.h"
+#include "pybind11/detail/common.h"
+#include "pybind11/pytypes.h"
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <tuple>
+#include <vector>
 
 namespace py = pybind11;
 
@@ -76,6 +80,40 @@ PYBIND11_MODULE(dune, m) {
                 static_cast<ssize>(sizeof(float))};
 
             float *ptr = ds.vegetation.values.data();
+
+            // keep C++ object alive while NumPy array exists
+            py::object base = py::cast(&ds);
+            return py::array_t<float>(shape, strides, ptr, base);
+          })
+      .def_property_readonly(
+          "wind_x",
+          [](DuneSediment &ds) {
+            using ssize = py::ssize_t;
+            std::vector<ssize> shape = {static_cast<ssize>(ds.ny),
+                                        static_cast<ssize>(ds.nx)};
+
+            std::vector<ssize> strides = {
+                static_cast<ssize>(ds.nx * sizeof(float)),
+                static_cast<ssize>(sizeof(float))};
+
+            float *ptr = ds.windX.values.data();
+
+            // keep C++ object alive while NumPy array exists
+            py::object base = py::cast(&ds);
+            return py::array_t<float>(shape, strides, ptr, base);
+          })
+      .def_property_readonly(
+          "wind_y",
+          [](DuneSediment &ds) {
+            using ssize = py::ssize_t;
+            std::vector<ssize> shape = {static_cast<ssize>(ds.ny),
+                                        static_cast<ssize>(ds.nx)};
+
+            std::vector<ssize> strides = {
+                static_cast<ssize>(ds.nx * sizeof(float)),
+                static_cast<ssize>(sizeof(float))};
+
+            float *ptr = ds.windY.values.data();
 
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);

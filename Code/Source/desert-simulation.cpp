@@ -196,7 +196,7 @@ void DuneSediment::PerformReptationOnCell(int i, int j, int bounce) {
 */
 void DuneSediment::ComputeWindAtCell(int i, int j, Vector2 &windDir) const {
   // Base wind direction
-  windDir = wind;
+  windDir = Vector2(windX.Get(i, j), windY.Get(i, j));
 
   // Modulate wind strength with sediment layer: increase velocity on slope in
   // the direction of the wind

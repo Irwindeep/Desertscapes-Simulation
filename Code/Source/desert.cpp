@@ -8,11 +8,13 @@
 \brief Default constructor.
 */
 DuneSediment::DuneSediment(int nx, int ny)
-    : nx(nx), ny(ny), box(Box2D(Vector2(0), 1)), wind(Vector2(1, 0)) {
+    : nx(nx), ny(ny), box(Box2D(Vector2(0), 1)) {
 
   bedrock = ScalarField2D(nx, ny, box, 0.0);
   vegetation = ScalarField2D(nx, ny, box, 0.0);
   sediments = ScalarField2D(nx, ny, box, 0.0);
+  windX = ScalarField2D(nx, ny, box, 1.0);
+  windY = ScalarField2D(nx, ny, box, 0.0);
 
   matterToMove = 0.1f;
   Vector2 celldiagonal =
@@ -32,11 +34,14 @@ DuneSediment::DuneSediment(int nx, int ny)
 */
 DuneSediment::DuneSediment(int nx, int ny, const Box2D &bbox, float rMin,
                            float rMax, const Vector2 &w)
-    : nx(nx), ny(ny), box(bbox), wind(w) {
+    : nx(nx), ny(ny), box(bbox) {
 
   bedrock = ScalarField2D(nx, ny, box, 1.0);
   vegetation = ScalarField2D(nx, ny, box, 0.0);
   sediments = ScalarField2D(nx, ny, box, 0.0);
+  windX = ScalarField2D(nx, ny, box, w.x);
+  windY = ScalarField2D(nx, ny, box, w.y);
+
   for (int i = 0; i < nx; i++) {
     for (int j = 0; j < ny; j++) {
       // Vegetation
