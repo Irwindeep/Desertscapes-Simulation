@@ -4,6 +4,7 @@
 #include "pybind11/cast.h"
 #include "pybind11/detail/common.h"
 #include "pybind11/pytypes.h"
+#include <cstring>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -34,7 +35,7 @@ PYBIND11_MODULE(dune, m) {
       .def_readwrite("ny", &DuneSediment::ny)
       .def_readwrite("vegetation_on", &DuneSediment::vegetationOn)
       .def_readwrite("abrasion_on", &DuneSediment::abrasionOn)
-      .def_property_readonly(
+      .def_property(
           "bedrock",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -50,8 +51,15 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.bedrock.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
-      .def_property_readonly(
+      .def_property(
           "sediments",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -67,8 +75,15 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.sediments.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
-      .def_property_readonly(
+      .def_property(
           "vegetation",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -84,8 +99,15 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.vegetation.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
-      .def_property_readonly(
+      .def_property(
           "wind_x",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -101,8 +123,15 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.windX.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
-      .def_property_readonly(
+      .def_property(
           "wind_y",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -118,8 +147,15 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.windY.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
-      .def_property_readonly(
+      .def_property(
           "bedrock_hardness",
           [](DuneSediment &ds) {
             using ssize = py::ssize_t;
@@ -135,6 +171,13 @@ PYBIND11_MODULE(dune, m) {
             // keep C++ object alive while NumPy array exists
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
+          },
+          [](DuneSediment &ds,
+             py::array_t<float, py::array::c_style | py::array::forcecast>
+                 arr) {
+            const float *src = static_cast<const float *>(arr.data());
+            std::memcpy(ds.bedrockHardness.values.data(), src,
+                        sizeof(float) * ds.nx * ds.ny);
           })
       .def("step", &DuneSediment::SimulationStepMultiThreadAtomic);
 }
