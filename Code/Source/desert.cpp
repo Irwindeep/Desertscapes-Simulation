@@ -15,6 +15,7 @@ DuneSediment::DuneSediment(int nx, int ny)
   sediments = ScalarField2D(nx, ny, box, 0.0);
   windX = ScalarField2D(nx, ny, box, 1.0);
   windY = ScalarField2D(nx, ny, box, 0.0);
+  bedrockHardness = ScalarField2D(nx, ny, box, 0.0);
 
   matterToMove = 0.1f;
   Vector2 celldiagonal =
@@ -41,6 +42,7 @@ DuneSediment::DuneSediment(int nx, int ny, const Box2D &bbox, float rMin,
   sediments = ScalarField2D(nx, ny, box, 0.0);
   windX = ScalarField2D(nx, ny, box, w.x);
   windY = ScalarField2D(nx, ny, box, w.y);
+  bedrockHardness = ScalarField2D(nx, ny, box, 0.0);
 
   for (int i = 0; i < nx; i++) {
     for (int j = 0; j < ny; j++) {

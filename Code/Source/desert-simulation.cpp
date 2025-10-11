@@ -1,6 +1,7 @@
 #include "../Include/desert.h"
 #include "../Include/noise.h"
 
+#include <cmath>
 #include <omp.h>
 
 // File scope variables
@@ -235,9 +236,11 @@ void DuneSediment::PerformAbrasionOnCell(int i, int j, const Vector2 &windDir) {
   const Vector2 p = bedrock.ArrayVertex(i, j);
   const float freq = 0.08f;
   const float warp = 15.36f;
-  float h =
-      (sinf((p.y * freq) + (warp * PerlinNoise::GetValue(0.05f * p))) + 1.0f) /
-      2.0f;
+
+  float h = sinf((p.y * freq) + (warp * PerlinNoise::GetValue(0.05f * p)));
+  h = (h + 1) / 2.0f;
+
+  bedrockHardness[id] = h;
 
   // Wind strength
   float w = Math::Clamp(Magnitude(windDir), 0.0f, 2.0f);

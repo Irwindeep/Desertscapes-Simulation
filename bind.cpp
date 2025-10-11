@@ -119,5 +119,22 @@ PYBIND11_MODULE(dune, m) {
             py::object base = py::cast(&ds);
             return py::array_t<float>(shape, strides, ptr, base);
           })
+      .def_property_readonly(
+          "bedrock_hardness",
+          [](DuneSediment &ds) {
+            using ssize = py::ssize_t;
+            std::vector<ssize> shape = {static_cast<ssize>(ds.ny),
+                                        static_cast<ssize>(ds.nx)};
+
+            std::vector<ssize> strides = {
+                static_cast<ssize>(ds.nx * sizeof(float)),
+                static_cast<ssize>(sizeof(float))};
+
+            float *ptr = ds.bedrockHardness.values.data();
+
+            // keep C++ object alive while NumPy array exists
+            py::object base = py::cast(&ds);
+            return py::array_t<float>(shape, strides, ptr, base);
+          })
       .def("step", &DuneSediment::SimulationStepMultiThreadAtomic);
 }

@@ -25,6 +25,7 @@ public:
   ScalarField2D vegetation; //!< Vegetation presence in [0, 1].
   ScalarField2D windX;
   ScalarField2D windY;
+  ScalarField2D bedrockHardness;
 
   DuneSediment(int nx, int ny);
   DuneSediment(int nx, int ny, const Box2D &bbox, float rMin, float rMax,
