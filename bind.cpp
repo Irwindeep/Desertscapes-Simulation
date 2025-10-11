@@ -23,8 +23,8 @@ PYBIND11_MODULE(dune, m) {
                  Box2D(Vector2(0, 0), Vector2(std::get<0>(cell_size) * nx,
                                               std::get<1>(cell_size) * ny)),
                  r_min, r_max, Vector2(std::get<0>(wind), std::get<1>(wind)));
-             ds.vegetationOn = vegetation_on;
-             ds.abrasionOn = abrasion_on;
+             ds.SetVegetationMode(vegetation_on);
+             ds.SetAbrasionMode(abrasion_on);
              return ds;
            }),
            py::arg("nx"), py::arg("ny"), py::arg("r_min"), py::arg("r_max"),

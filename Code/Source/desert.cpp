@@ -1,5 +1,4 @@
 #include "../Include/desert.h"
-#include "../Include/noise.h"
 
 #include <fstream>
 #include <iostream>
@@ -46,14 +45,6 @@ DuneSediment::DuneSediment(int nx, int ny, const Box2D &bbox, float rMin,
 
   for (int i = 0; i < nx; i++) {
     for (int j = 0; j < ny; j++) {
-      // Vegetation
-      // Arbitrary clamped 2D noise - but you can use whatever you want.
-      float v = PerlinNoise::fBm(Vector3(i * 7.91247f, j * 7.91247f, 0.0f),
-                                 1.0f, 0.002f, 3) /
-                1.75f;
-      if (v > 0.45f)
-        vegetation.Set(i, j, 0.85f);
-
       // Sand
       sediments.Set(i, j, Random::Uniform(rMin, rMax));
     }

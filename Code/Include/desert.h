@@ -1,6 +1,8 @@
 #pragma once
 
 #include "basics.h"
+#include "noise.h"
+#include "vec.h"
 
 class DuneSediment {
 private:
@@ -111,9 +113,51 @@ inline float DuneSediment::Sediment(int i, int j) const {
 /*!
 \brief
 */
-inline void DuneSediment::SetAbrasionMode(bool c) { abrasionOn = c; }
+inline void DuneSediment::SetAbrasionMode(bool c) {
+  abrasionOn = c;
+  if (!abrasionOn) {
+    return;
+  }
+
+  for (int i = 0; i < nx; i++) {
+    for (int j = 0; j < ny; j++) {
+      const float freq = 0.08f;
+      const float warp = 15.36f;
+      const Vector2 p = bedrock.ArrayVertex(i, j);
+
+      // Bedrock resistance [0, 1] (1.0 equals to weak, 0.0 equals to hard)
+      // Here with a simple sin() function, but anything could be used: texture,
+      // noise, construction trees... In the paper, we used various noises
+      // octaves combined with each other. Note: To get a more interesting look
+      // on the yardangs, turbulent wind is required. It is not provided In this
+      // implementation.
+
+      float h = sinf((p.y * freq) + (warp * PerlinNoise::GetValue(0.05f * p)));
+      h = (h + 1) / 2.0f;
+      bedrockHardness.Set(i, j, h);
+    }
+  }
+}
 
 /*!
 \brief
 */
-inline void DuneSediment::SetVegetationMode(bool c) { vegetationOn = c; }
+inline void DuneSediment::SetVegetationMode(bool c) {
+  vegetationOn = c;
+  if (!vegetationOn) {
+    return;
+  }
+
+  for (int i = 0; i < nx; i++) {
+    for (int j = 0; j < ny; j++) {
+      // Vegetation
+      // Arbitrary clamped 2D noise - but you can use whatever you want.
+      Vector3 vector = Vector3(i * 7.91247f, j * 7.91247f, 0.0f);
+      float v = PerlinNoise::fBm(vector, 1.0f, 0.002f, 3);
+      v = v / 1.75f;
+
+      if (v > 0.45f)
+        vegetation.Set(i, j, 0.85f);
+    }
+  }
+}

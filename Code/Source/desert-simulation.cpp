@@ -1,7 +1,5 @@
 #include "../Include/desert.h"
-#include "../Include/noise.h"
 
-#include <cmath>
 #include <omp.h>
 
 // File scope variables
@@ -226,21 +224,7 @@ void DuneSediment::PerformAbrasionOnCell(int i, int j, const Vector2 &windDir) {
 
   // Vegetation protects from abrasion
   float v = vegetationOn ? vegetation.Get(id) : 0.0f;
-
-  // Bedrock resistance [0, 1] (1.0 equals to weak, 0.0 equals to hard)
-  // Here with a simple sin() function, but anything could be used: texture,
-  // noise, construction trees... In the paper, we used various noises octaves
-  // combined with each other. Note: To get a more interesting look on the
-  // yardangs, turbulent wind is required. It is not provided In this
-  // implementation.
-  const Vector2 p = bedrock.ArrayVertex(i, j);
-  const float freq = 0.08f;
-  const float warp = 15.36f;
-
-  float h = sinf((p.y * freq) + (warp * PerlinNoise::GetValue(0.05f * p)));
-  h = (h + 1) / 2.0f;
-
-  bedrockHardness[id] = h;
+  float h = bedrockHardness.Get(id);
 
   // Wind strength
   float w = Math::Clamp(Magnitude(windDir), 0.0f, 2.0f);
